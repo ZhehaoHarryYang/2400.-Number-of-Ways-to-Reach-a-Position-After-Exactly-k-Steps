@@ -1,0 +1,23 @@
+class Solution:
+    def numberOfWays(self, startPos: int, endPos: int, k: int) -> int:
+        #like you have [1,1,1] k number of 1s you can either put a + or - in front of the numbers, at the end you will be equal endpos from startpos
+        #if k + endpos - startpos is odd, return 0
+        if (k + endPos - startPos) % 2:
+            return 0
+        dp = {}
+        target = endPos - startPos
+        mod = 10**9 + 7
+        def dfs(i, cur):
+            if i == k:
+                if cur == target:
+                    return 1
+                else:
+                    return 0
+            
+            if (i, cur) in dp:
+                return dp[(i, cur)]
+            
+            dp[(i, cur)] = dfs(i + 1, cur + 1) + dfs(i + 1, cur - 1) % mod   
+            return dp[(i, cur)] % mod
+        
+        return dfs(0, 0) % mod
